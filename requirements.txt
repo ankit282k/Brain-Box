@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+psycopg2-binary
+sqlalchemy
+pgvector
+langchain
+langchain-openai
+python-dotenv
+langchain-community
+psycopg2-binary 
+pgvector
+langchain-postgres
+sentence-transformers
