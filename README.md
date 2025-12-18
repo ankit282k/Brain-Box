@@ -3,7 +3,9 @@
 Brain Box is a Retrieval-Augmented Generation (RAG) chat bot. The backend ingests documents, builds a vector store, and serves a chat API that answers questions using retrieved context.
 
 ## Features
-- It uses models from Azure AI Foundry 
+- Vector embedding and storage using ChromaDB
+- Semantic retrieval and prompt orchestration with LangChain
+- It uses Models powered by Azure AI Foundry
 - Document ingestion and vector store rebuild on upload
 - Pluggable LLM / embedding configuration via environment variables
 
