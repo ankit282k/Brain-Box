@@ -3,6 +3,7 @@
 Brain Box is a Retrieval-Augmented Generation (RAG) chat bot. The backend ingests documents, builds a vector store, and serves a chat API that answers questions using retrieved context.
 
 ## Features
+- It uses models from Azure AI Foundry 
 - Document ingestion and vector store rebuild on upload
 - Pluggable LLM / embedding configuration via environment variables
 
@@ -18,7 +19,13 @@ Brain Box is a Retrieval-Augmented Generation (RAG) chat bot. The backend ingest
 - Python 3.10+
 - See `backend/requirements.txt` and `frontend/requirements.txt` for project-specific dependencies
 
-## Quickstart (local)
+## Quickstart - Docker
+
+```bash
+docker compose up --build
+```
+
+## Run locally
 
 1. Create and activate a virtual environment:
 
@@ -56,12 +63,6 @@ uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
 streamlit run frontend/streamlit_app.py --server.port 8501
 ```
 
-7. Optionally run with Docker Compose:
-
-```bash
-docker compose up --build
-```
-
 ## .env — recommended variables
 
 Create a `.env` file at the project root. The backend reads configuration from environment variables (via `os.environ` in the code). Below are recommended variables and example values — adapt these to your environment and provider.
@@ -69,24 +70,15 @@ Create a `.env` file at the project root. The backend reads configuration from e
 Example `.env`:
 
 ```
-# OpenAI keys
-OPENAI_API_KEY=your_openai_api_key_here
-# Optional: if using a different base URL (e.g., Azure or proxy)
-OPENAI_API_BASE=https://api.openai.com
+# Azure AI Foundry
+AZURE_API_KEY
+API_VERSION
+AZURE_ENDPOINT 
 
 # Models
-LLM_MODEL=gpt-4o-mini   # or any supported model name
-EMBEDDING_MODEL=text-embedding-3-small
-
-# Vector store
-VECTOR_STORE_TYPE=chroma   # or faiss, _custom_ depending on implementation
-VECTOR_STORE_PATH=./data/vectors
-
-# App settings
-DATA_DIR=./data
-HOST=0.0.0.0
-PORT=8000
-DEBUG=false
+MODEL_NAME=gpt-4.1-mini   # or any supported model name
+EMBEDDING_DEPLOYMENT_NAME=text-embedding-3-small
+DEPLOYMENT_NAME = "gpt-4.1-mini"
 
 ```
 
