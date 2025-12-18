@@ -98,3 +98,6 @@ How to use the `.env` file:
 - Swap embedding or LLM models by changing `EMBEDDING_MODEL` and `LLM_MODEL` in `.env`.
 - Add provider-specific secrets (Pinecone, Azure, etc.) to `.env` and update `backend/vector_store.py` accordingly.
 - Add authentication to the API in front of the endpoints for production.
+
+## Images
+<img width="1467" height="836" alt="Screenshot 2025-12-18 at 8 04 58 PM" src="https://github.com/user-attachments/assets/8386a855-b3dc-497d-94e6-a7f223c11566" />
