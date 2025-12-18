@@ -33,12 +33,6 @@ def setup_rag_bot(data_path="./data", rebuild_index=False):
         
         # Load documents from data folder
         documents = load_documents(data_path)
-        
-        # Optionally add web content
-        # urls = ["https://example.com/page1", "https://example.com/page2"]
-        # web_docs = load_from_urls(urls)
-        # documents.extend(web_docs)
-        
         # Create vector store
         vectorstore = vector_store.create_vectorstore(documents)
     elif not os.path.exists("./chroma_db"):
@@ -68,7 +62,6 @@ def main():
         if question.lower() in ['quit', 'exit', 'q']:
             break
         
-        # Get answer
         result = bot.chat(question)
         
         print(f"\nBot: {result['answer']}\n")

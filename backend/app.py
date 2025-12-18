@@ -1,37 +1,3 @@
-# # app.py
-# from flask import Flask, request, jsonify, render_template
-# from flask_cors import CORS
-# from main import setup_rag_bot
-
-# app = Flask(__name__)
-# CORS(app)
-
-# # Initialize bot
-# bot = setup_rag_bot()
-
-# @app.route('/')
-# def home():
-#     return render_template('index.html')
-
-# @app.route('/chat', methods=['POST'])
-# def chat():
-#     data = request.json
-#     question = data.get('question')
-    
-#     if not question:
-#         return jsonify({'error': 'No question provided'}), 400
-    
-#     result = bot.chat(question)
-    
-#     return jsonify({
-#         'answer': result['answer'],
-#         'sources': [doc.metadata.get('source', 'Unknown') 
-#                    for doc in result['sources']]
-#     })
-
-# if __name__ == '__main__':
-#     app.run(debug=True, port=5000)
-
 from fastapi import FastAPI, HTTPException, BackgroundTasks, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
@@ -48,10 +14,6 @@ from main import setup_rag_bot
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# ============================================================================
-# FASTAPI APP INITIALIZATION
-# ============================================================================
-
 app = FastAPI(
     title="Brain Box API",
     description="Retrieval-Augmented Generation Chat Bot API",
@@ -59,11 +21,7 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc"
 )
-
-# ============================================================================
-# CORS CONFIGURATION
-# ============================================================================
-
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # In production, specify exact origins
@@ -71,11 +29,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# ============================================================================
-# GLOBAL VARIABLES
-# ============================================================================
-
+# Global bot instance
 bot = None
 bot_loaded = False
 
@@ -86,10 +40,6 @@ DATA_DIR.mkdir(exist_ok=True)
 # Allowed file extensions
 ALLOWED_EXTENSIONS = {'.pdf', '.txt', '.docx', '.doc', '.csv', '.xlsx', '.xls', '.json', '.md'}
 MAX_FILE_SIZE = 50 * 1024 * 1024  # 50 MB
-
-# ============================================================================
-# PYDANTIC MODELS
-# ============================================================================
 
 class Question(BaseModel):
     question: str = Field(..., min_length=1, description="User's question")
@@ -153,11 +103,6 @@ class UploadResponse(BaseModel):
             }
         }
 
-# ============================================================================
-# STARTUP & SHUTDOWN EVENTS
-# ============================================================================
-
-
 @app.on_event("startup")
 async def startup_event():
     """Initialize the RAG bot on startup"""
@@ -175,10 +120,6 @@ async def startup_event():
 async def shutdown_event():
     """Cleanup on shutdown"""
     logger.info("👋 Shutting down RAG Bot API...")
-
-# ============================================================================
-# API ENDPOINTS
-# ============================================================================
 
 @app.get("/", tags=["Root"])
 async def root():
@@ -443,10 +384,6 @@ async def reload_documents():
             detail=f"Error reloading documents: {str(e)}"
         )
 
-# ============================================================================
-# ERROR HANDLERS
-# ============================================================================
-
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
     """Custom HTTP exception handler"""
@@ -465,10 +402,6 @@ async def general_exception_handler(request, exc):
         "detail": str(exc),
         "timestamp": datetime.now().isoformat()
     }
-
-# ============================================================================
-# RUN SERVER
-# ============================================================================
 
 if __name__ == "__main__":
     uvicorn.run(

@@ -5,16 +5,9 @@ from typing import Optional, Dict, List
 import time
 import json
 
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
-
+#configurations
 API_URL = "http://backend:8000"
 REQUEST_TIMEOUT = 30
-
-# ============================================================================
-# PAGE CONFIGURATION
-# ============================================================================
 
 st.set_page_config(
     page_title="Brain Box",
@@ -22,10 +15,6 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
-
-# ============================================================================
-# CUSTOM CSS
-# ============================================================================
 
 st.markdown("""
     <style>
@@ -210,10 +199,6 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# ============================================================================
-# SESSION STATE INITIALIZATION
-# ============================================================================
-
 if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
 
@@ -234,10 +219,6 @@ if 'session_id' not in st.session_state:
 
 if 'last_uploaded_file' not in st.session_state:
     st.session_state.last_uploaded_file = None
-
-# ============================================================================
-# HELPER FUNCTIONS
-# ============================================================================
 
 def check_api_health() -> bool:
     """Check if API is running and healthy"""
@@ -368,11 +349,6 @@ def reload_documents() -> Dict:
     except Exception as e:
         return {'success': False, 'message': f"Error: {str(e)}"}
 
-# ============================================================================
-# SIDEBAR
-# ============================================================================
-# if st.button("Send balloons!"):
-#     st.balloons()
 with st.sidebar:
     # Header
     st.markdown("""
@@ -435,30 +411,6 @@ with st.sidebar:
         st.warning(f"⚠️ Please start the backend server:\n```bash\ncd backend\npython app.py\n```")
     
     st.markdown("---")
-    
-    # # Statistics
-    # st.subheader("📊 Session Statistics")
-    
-    # col1, col2 = st.columns(2)
-    
-    # with col1:
-    #     st.markdown(f"""
-    #         <div class="metric-card">
-    #             <div class="metric-value">{st.session_state.message_count}</div>
-    #             <div class="metric-label">Messages</div>
-    #         </div>
-    #     """, unsafe_allow_html=True)
-    
-    # with col2:
-    #     conversations = len(st.session_state.chat_history) // 2
-    #     st.markdown(f"""
-    #         <div class="metric-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-    #             <div class="metric-value">{conversations}</div>
-    #             <div class="metric-label">Q&A Pairs</div>
-    #         </div>
-    #     """, unsafe_allow_html=True)
-    
-    # st.markdown("---")
     
     # Display Settings
     st.subheader("⚙️ Display Settings")
@@ -524,10 +476,6 @@ with st.sidebar:
         - Reference original sources
         """)
 
-# ============================================================================
-# MAIN CHAT INTERFACE
-# ============================================================================
-
 # Page Header - At the very top
 st.markdown("""
     <div style='text-align: center; padding: 1rem 0 0.5rem 0;'>
@@ -552,19 +500,8 @@ if st.session_state.chat_history:
                         st.text(f"Source {source_idx}:")
                         st.text(source)
                         st.divider()
-# else:
-#     st.markdown("👋 Start a conversation! Ask me anything about your documents...")
 
-# ============================================================================
-# CHAT INPUT (Fixed at Bottom)
-# ============================================================================
-
-# Chat input widget (always fixed at the very bottom)
 user_input = st.chat_input("💭 Type your question here...", key="chat_input_box")
-
-# ============================================================================
-# HANDLE CHAT INPUT
-# ============================================================================
 
 if user_input:
     if not st.session_state.api_status:
@@ -628,9 +565,6 @@ if user_input:
         # Rerun to update the chat display
         st.rerun()
 
-# ============================================================================
-# FOOTER (Below Input)
-# ============================================================================
 
 st.markdown("""
     <div class='footer-below-input'>
@@ -638,11 +572,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# ============================================================================
-# KEYBOARD SHORTCUT (Optional Enhancement)
-# ============================================================================
 
-# Add JavaScript for Enter key submission (optional)
 st.markdown("""
     <script>
     const doc = window.parent.document;
